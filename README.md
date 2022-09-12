@@ -38,4 +38,6 @@ They require minimal startup times, allowing developers to run more containers o
 
 # Virtualisation vs Containerisation
 
+Virtualization and containerization are the two most frequently used mechanisms to host applications in a computer system. Virtualization uses the notion of a virtual machine as the fundamental unit. Containerization, on the other hand, uses the concept of a container.
+
 ![img](images/Screenshot%202022-09-12%20at%2011.29.36.png)
