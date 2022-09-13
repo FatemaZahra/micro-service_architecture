@@ -41,3 +41,43 @@ They require minimal startup times, allowing developers to run more containers o
 Virtualization and containerization are the two most frequently used mechanisms to host applications in a computer system. Virtualization uses the notion of a virtual machine as the fundamental unit. Containerization, on the other hand, uses the concept of a container.
 
 ![img](images/Screenshot%202022-09-12%20at%2011.29.36.png)
+
+## Commands
+
+`docker run hello-world`
+
+`docker images` # lists the images
+
+`docker ps` # lists containers
+
+`docker ps -a`
+
+`docker run -p 80:80 nginx`
+
+`docker run -d -p 80:80 nginx` # runs the nginx image on port 80 (and detached)
+
+`docker stop ID_of_container`
+
+`docker start ID_of_container`
+
+`docker rm ID_of_container -f`
+
+`docker rmi Image_ID -f `
+
+`docker exec -t b6d79d726693 sh`
+
+`docker exec -it b6d79d726693 bash`
+
+`cd /usr/share/nginx/html`
+
+`sudo nano index.html`
+
+update and install sudo nano if needed `apt-get update` `apt install sudo` `apt install nano`
+
+`docker commit container_ID username/image_name:tag`
+
+`docker push container_ID username/image_name:tag`
+
+`docker login`
+
+and push again
