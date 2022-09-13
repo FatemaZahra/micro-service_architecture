@@ -60,11 +60,11 @@ Virtualization and containerization are the two most frequently used mechanisms 
 
 `docker start ID_of_container`
 
-`docker rm ID_of_container -f`
+`docker rm ID_of_container -f` Delete container
 
-`docker rmi Image_ID -f `
+`docker rmi Image_ID -f ` Delete image
 
-`docker exec -t b6d79d726693 sh`
+`docker exec -it b6d79d726693 sh`
 
 `docker exec -it b6d79d726693 bash`
 
@@ -76,8 +76,101 @@ update and install sudo nano if needed `apt-get update` `apt install sudo` `apt 
 
 `docker commit container_ID username/image_name:tag`
 
-`docker push container_ID username/image_name:tag`
+`docker push username/image_name:tag`
 
 `docker login`
 
 and push again
+
+## Moving file from localhost to container
+
+- Create an index.html file on localhost
+- docker run -d -p 80:80 nginx
+- Delete exisiting index.html in container `docker exec container_ID rm -rf /usr/share/nginx/html/index.html`
+- Copy file from localhost to container: `docker cp index.html container_ID:/usr/share/nginx/html`
+
+## Creating a web server using Dockerfile
+
+- Create an index.html
+- Create a Dockerfile
+
+```
+
+# Select base image
+
+FROM nginx
+
+# label it
+
+LABEL MAINTAINER=fatema@dev
+
+# copy data from loaclhost to the container
+
+COPY index.html /usr/share/nginx/html/
+
+# allow required port
+
+EXPOSE 80
+
+# execute required command
+
+CMD ["nginx","-g","daemon off;"]
+
+```
+
+`docker build -t fatemazahra/eng122_nginx_web_hosting .`
+
+`docker run -d -p 100:80 fatemazahra/eng122_nginx_web_hosting`
+
+`docker push fatemazahra/eng122_nginx_web_hosting`
+
+## Building a Docker image for our node app
+
+- create a micro-service for node-app
+- create Dockerfile inside the app folder
+- create a script to package our node app in an image
+- create a container of our image
+- should load it on port 3000 or port 80
+- push it to docker hub
+
+## Steps
+
+- Copy the node app
+- Create a Dockerfile at the same location as the app
+
+```t
+# base image
+FROM node
+
+# label
+LABEL MAINTAINER=FATEMA
+
+# inside the container what would Be the default working directory
+#pwd homw/vagrant/ubuntu
+#WRDIR usr/src/app
+WORKDIR /usr/src/app
+
+# copy dependencies -app folder
+COPY package*.json ./
+
+#copy all files with .json extention to default location
+# run some commands such as npm install
+RUN npm install -g npm@7.20.6
+
+#COPY EVERYTHING FROM CURRENT LOCATION AND PASTE IN THE DEFAULT LOCATION
+COPY . .
+
+# expose the port 3000
+EXPOSE 3000
+
+# cmd ["node","app.js"]
+CMD ["node","app.js"]
+
+# BUILD THIS IMAGE - PACKAGE IT UP
+```
+
+`docker build -t fatemazahra/eng122_node_app .`
+
+`docker run -d -p 3000:3000 fatemazahra/eng122_node_app`
+
+`docker push fatemazahra/eng122_node_app`
