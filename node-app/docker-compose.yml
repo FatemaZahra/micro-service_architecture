@@ -1,0 +1,51 @@
+# version: "3.9"
+# services:
+#   web:
+#     container_name: eng122_app_mongo
+#     restart: always
+#     build: .
+#     ports:
+#       - "80:3000"
+#     links:
+#       - mongo
+
+#   mongo:
+#     container_name: eng122_mongo
+#     image: mongo
+#     ports:
+#       - "27017:27017"
+
+# Version of the compose file format
+version: "3.9"
+# Container services
+services:
+  db:
+    #  # image to fetch from docker hub
+    image: mongo:3.2.20
+    container_name:
+      mongo
+      # Mount volume
+    volumes:
+      - ./mongod.conf:/etc/mongod.conf
+      # - ./logs:/var/log/mongod/
+      # - ./db:/var/lib/mongodb
+    # Mapping of container port to host
+    ports:
+      - "27017:27017"
+
+  app:
+    # Path to Dockerfile
+    container_name: app
+    build: ./app
+    restart: always
+    ports:
+      - "3000:3000"
+    # Environment variables for startup script
+    # container will use these variables
+    # to start the container with these define variables.
+    environment:
+      - DB_HOST=mongodb://db:27017/posts
+    depends_on:
+      - db
+    # links:
+    #   - mongo
